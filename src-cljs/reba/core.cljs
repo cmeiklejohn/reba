@@ -1,5 +1,7 @@
 (ns reba.core
-  (:require [clojure.string :as string]))
+  (:require [clojure.string :as string]
+            [hiccups.runtime :as hiccusrt])
+  (:require-macros [hiccups.core :as hiccups]))
 
 (defn render-watcher! [x y a b]
   "Watcher function, which applies the render function to the iref it's
@@ -9,14 +11,20 @@
   (alter-meta! y (fn [m]
     (merge m {:rendered (apply (:render-fn (meta y)) [b])}))))
 
-(defn watch-and-render! [x render-fn]
+(defn render! [x initial render-fn]
   "Given an iref, store a render function and bind a watcher to call
-  that function on change."
+  that function on change.  Immediately execute the watcher with initial
+  value."
   (alter-meta! x (fn [m] (merge m {:render-fn render-fn})))
-  (add-watch x :render-watcher render-watcher!))
+  (add-watch x :render-watcher render-watcher!)
+  (swap! x (fn [] initial)))
+
+(defn generate-names [names]
+  "Generate the HTML elements for the names list."
+  (hiccups/html [:ul (for [x names] [:li x])]))
 
 (defn main []
-  (def my-name (atom (str "Chris")))
-  (watch-and-render! my-name string/upper-case)
-  (swap! my-name (fn [] (str "Simon")))
-  (.log js/console (:rendered (meta my-name))))
+  (def names (atom []))
+  (render! names ["Chris" "Simon"] generate-names)
+  (swap! names (fn [] ["Chris" "Simon" "Joan"]))
+  (.log js/console (:rendered (meta names))))
