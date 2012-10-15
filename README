@@ -1,13 +1,9 @@
 # reba
 
-FIXME: write description
-
-## Usage
-
-FIXME: write
+Prototype of a binding library authored in ClojureScript.  Reba is a work in progress.
 
 ## License
 
-Copyright (C) 2012 FIXME
+Copyright (C) 2012 Christopher Meiklejohn
 
 Distributed under the Eclipse Public License, the same as Clojure.
