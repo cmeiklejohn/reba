@@ -8,9 +8,9 @@
   ;; Update DOM.
   (set! (.-innerHTML (.getElementById js/document node)) materialized)
 
+  ;; Saves the rendered content to the metadata.
   (alter-meta! y (fn [m]
-    (merge m {(keyword (str "rendered" materializer-name)) materialized})))
-  )
+    (merge m {(keyword (str "rendered" materializer-name)) materialized}))))
 
 (defn add-materializer! [node object materializer-name materializer-fn initial-value]
   "Setup a materializer."
