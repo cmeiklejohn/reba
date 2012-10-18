@@ -30,9 +30,7 @@
 
   ;; Bind event listener to the element in the DOM.
   (.addEventListener
-    (.getElementById js/document node)
-    event-type
+    (.getElementById js/document node) event-type
     (partial (fn [object event]
-               (swap! object (fn [] (apply event-fn [object event]))))
-             object)
+               (swap! object (fn [] (apply event-fn [object event])))) object)
     "false"))
