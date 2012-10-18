@@ -3,17 +3,24 @@
             [reba.materializable :as materializable])
   (:require-macros [hiccups.core :as hiccups]))
 
-(defn generate-list-of-names [names]
-  (hiccups/html [:ul (for [x names] [:li x])]))
+;; Define list of names.
+(def list-of-names (atom []))
 
 (defn main []
-  ;; Define list of names.
-  (def list-of-names (atom []))
-
-  ;; Naive changer.
-  (defn changeme []
-    (swap! list-of-names (fn [] ["Chris"])))
+  "Initialize the web application."
 
   ;; Add materializers with default value.
-  (materializable/add-materializer! "container" list-of-names :list-view generate-list-of-names ["Chris" "Simon" "Joan"]))
+  (materializable/add-materializer! list-of-names
+                                    :list-view
+                                    "container"
+                                    (fn [names]
+                                      (hiccups/html [:ul (for [x names] [:li x])]))
+                                    ["Chris" "Simon" "Joan"]))
+
+  ;; Bind events to a particular view.
+  (materializable/add-listener! list-of-names
+                                :list-view,
+                                "container"
+                                "click"
+                                (fn [object event] ["Chris"]))
 

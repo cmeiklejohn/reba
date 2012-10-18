@@ -12,14 +12,27 @@
   (alter-meta! y (fn [m]
     (merge m {(keyword (str "rendered" materializer-name)) materialized}))))
 
-(defn add-materializer! [node object materializer-name materializer-fn initial-value]
+(defn add-materializer! [object materializer-name node materializer-fn initial-value]
   "Setup a materializer."
 
   ;; Add meta-data.
   (alter-meta! object (fn [m] (merge m {materializer-name materializer-fn})))
 
   ;; Setup watcher.
-  (add-watch object materializer-name (partial materializer-watch! node materializer-name))
+  (add-watch object materializer-name
+             (partial materializer-watch! node materializer-name))
 
   ;; Trigger materialization.
   (swap! object (fn [] initial-value)))
+
+(defn add-listener! [object materializer-name node event-type event-fn]
+  "Add an event listener."
+
+  ;; Bind event listener to the element in the DOM.
+  (.addEventListener
+    (.getElementById js/document node)
+    event-type
+    (partial (fn [object event]
+               (swap! object (fn [] (apply event-fn [object event]))))
+             object)
+    "false"))
