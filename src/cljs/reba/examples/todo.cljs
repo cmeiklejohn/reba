@@ -34,13 +34,15 @@
   (materializable/add-materializer! list-of-items :completed-list-view "completed"
                                     (fn [items]
                                       (hiccups/html
-                                        (for [{:keys [name]} (filter completed? items)] [:li name]))))
+                                        (for [{:keys [name]}
+                                          (filter completed? items)] [:li name]))))
 
   ;; Add materializer to generate the outstanding list.
   (materializable/add-materializer! list-of-items :outstanding-list-view "outstanding"
                                     (fn [items]
                                       (hiccups/html
-                                        (for [{:keys [name]} (filter outstanding? items)] [:li name]))))
+                                        (for [{:keys [name]}
+                                          (filter outstanding? items)] [:li name]))))
 
   ;; Add materializer to generate the total indicator.
   (materializable/add-materializer! list-of-items :num-total "num-total"
@@ -51,12 +53,8 @@
                                     (fn [items] (count (filter completed? items))))
 
   ;; Bind event listener for the form for when items are added.
-  (.addEventListener
-    (.getElementById js/document "add-todo") "click"
-    (fn [x]
-      (.preventDefault x)
-      (swap! list-of-items (fn []
-          (conj (deref list-of-items)
-                (create-item (.-value (.getElementById js/document "new-todo-name")) false)))))
-    "false")
+  (eventable/add-listener! list-of-items "add-todo" "click" (fn [items event]
+    (swap! items (fn []
+      (conj (deref items)
+        (create-item (.-value (.getElementById js/document "new-todo-name")) false))))))
 )
