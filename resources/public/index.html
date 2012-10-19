@@ -14,7 +14,13 @@
       <h3>You've have <span id="num-outstanding"></span> completed out
         of <span id="num-total"></span> tasks.</h3>
 
-      <ul id="items"></ul>
+      <h3>Outstanding Items</h3>
+
+      <ul id="outstanding"></ul>
+
+      <h3>Completed Items</h3>
+
+      <ul id="completed"></ul>
 
       <form action="/">
         Add a new item: <input type="text" id="new-todo-name" />
@@ -26,7 +32,7 @@
     <script type="text/javascript" src="application.js"></script>
 
     <script type="text/javascript">
-      reba.core.main();
+      reba.examples.todo.main();
     </script>
   </body>
 </html>
