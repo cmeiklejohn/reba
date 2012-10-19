@@ -8,3 +8,4 @@
 /.lein-deps-sum
 /.lein-*
 resources/public/*.js
+tags
