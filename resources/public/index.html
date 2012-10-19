@@ -2,37 +2,49 @@
 <html>
   <head>
     <title>To-Do List</title>
+    <script type="text/javascript">var CLOSURE_NO_DEPS = true;</script>
 
-    <script type="text/javascript">
-      var CLOSURE_NO_DEPS = true;
-    </script>
+    <style type="text/css">
+      body {
+        background: url('images/background.png');
+        font-family: 'helvetica'
+      }
+
+      #container {
+        width: 1024px;
+        margin: 0px auto;
+      }
+
+      .small {
+        font-size: 8pt;
+      }
+    </style>
   </head>
   <body>
-    <h1>To-Do List</h1>
+    <div id="container">
+      <div id="application">
+        <h1>To-Do List</h1>
 
-    <div id="application">
-      <h3>You've have <span id="num-outstanding"></span> completed out
-        of <span id="num-total"></span> tasks.</h3>
+        <h3>You've completed <span id="num-outstanding"></span> out
+          of <span id="num-total"></span> tasks.</h3>
 
-      <h3>Outstanding Items</h3>
+        <h3>Outstanding Items</h3>
 
-      <ul id="outstanding"></ul>
+        <ul id="outstanding"></ul>
 
-      <h3>Completed Items</h3>
+        <h3>Completed Items</h3>
 
-      <ul id="completed"></ul>
+        <ul id="completed"></ul>
 
-      <form action="/">
-        Add a new item: <input type="text" id="new-todo-name" />
+        <form action="/">
+          Add a new item: <input type="text" id="new-todo-name" />
 
-        <input type="submit" id="add-todo" />
-      </form>
+          <input type="submit" id="add-todo" />
+        </form>
+      </div>
     </div>
 
     <script type="text/javascript" src="application.js"></script>
-
-    <script type="text/javascript">
-      reba.examples.todo.main();
-    </script>
+    <script type="text/javascript">reba.examples.todo.main();</script>
   </body>
 </html>

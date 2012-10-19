@@ -20,7 +20,7 @@
 ;; Define item builder.
 (defn create-item [name completed]
   "Given a name and completed status, return a task."
-  { :name name :completed completed })
+  {:name name :completed completed})
 
 (defn main []
   "Initialize the to-do application."
@@ -54,7 +54,6 @@
 
   ;; Bind event listener for the form for when items are added.
   (eventable/add-listener! list-of-items "add-todo" "click" (fn [items event]
-    (swap! items (fn []
-      (conj (deref items)
-        (create-item (.-value (.getElementById js/document "new-todo-name")) false))))))
-)
+    (def new-todo-name (.-value (.getElementById js/document "new-todo-name")))
+    (set! (.-value (.getElementById js/document "new-todo-name")) "")
+    (conj (deref items) (create-item new-todo-name false)))))
