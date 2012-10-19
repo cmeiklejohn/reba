@@ -35,10 +35,10 @@
 
   ;; Bind event listener for the form for when items are added.
   (.addEventListener
-    (.getElementById js/document "add_todo") "click"
+    (.getElementById js/document "add-todo") "click"
     (fn [x]
       (.preventDefault x)
       (swap! list-of-items (fn []
           (conj (deref list-of-items)
-                (.-value (.getElementById js/document "new_todo_name")))))) "false")
+                (.-value (.getElementById js/document "new-todo-name")))))) "false")
 )
