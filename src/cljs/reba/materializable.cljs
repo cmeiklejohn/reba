@@ -12,7 +12,7 @@
   (alter-meta! y (fn [m]
     (merge m {(keyword (str "rendered" materializer-name)) materialized}))))
 
-(defn add-materializer! [object materializer-name node materializer-fn initial-value]
+(defn add-materializer! [object materializer-name node materializer-fn]
   "Setup a materializer."
 
   ;; Add meta-data.
@@ -23,7 +23,7 @@
              (partial materializer-watch! node materializer-name))
 
   ;; Trigger materialization.
-  (swap! object (fn [] initial-value)))
+  (swap! object (fn [] @object)))
 
 (defn add-listener! [object materializer-name node event-type event-fn]
   "Add an event listener."

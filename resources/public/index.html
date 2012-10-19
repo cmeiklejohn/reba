@@ -1,12 +1,32 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
   <head>
-    <title></title>
+    <title>To-Do List</title>
+
+    <script type="text/javascript">
+      var CLOSURE_NO_DEPS = true;
+    </script>
   </head>
-  <body id="application">
-    <div id="container"></div>
-    <script>var CLOSURE_NO_DEPS = true;</script>
-    <script src="application.js"></script>
-    <script>reba.core.main();</script>
+  <body>
+    <h1>To-Do List</h1>
+
+    <div id="application">
+      <h3>You've have <span id="num_outstanding"></span> completed out
+        of <span id="num_total"></span> tasks.</h3>
+
+      <ul id="items"></ul>
+
+      <form action="/">
+        Add a new item: <input type="text" id="new_todo_name" />
+
+        <input type="submit" id="add_todo" />
+      </form>
+    </div>
+
+    <script type="text/javascript" src="application.js"></script>
+
+    <script type="text/javascript">
+      reba.core.main();
+    </script>
   </body>
 </html>
