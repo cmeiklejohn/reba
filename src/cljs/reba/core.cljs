@@ -1,6 +1,7 @@
 (ns reba.core
   (:require [hiccups.runtime :as hiccusrt]
-            [reba.materializable :as materializable])
+            [reba.materializable :as materializable]
+            [reba.eventable :as eventable])
   (:require-macros [hiccups.core :as hiccups]))
 
 (defn main []
@@ -19,7 +20,8 @@
   ;; Add materializer to generate the list.
   (materializable/add-materializer! list-of-items :list-view "items"
                                     (fn [items]
-                                      (hiccups/html (for [x items] [:li x]))))
+                                      (hiccups/html
+                                        (for [{:keys [name]} items] [:li name]))))
 
   ;; Add materializer to generate the total indicator.
   (materializable/add-materializer! list-of-items :num-total "num-total"
@@ -30,7 +32,7 @@
                                     (fn [items] (count (filter completed? items))))
 
   ;; Bind events to a particular view.
-  (materializable/add-listener! list-of-items :list-view, "items" "click"
+  (eventable/add-listener! list-of-items "items" "click"
                                 (fn [object event] ["Chris"]))
 
   ;; Bind event listener for the form for when items are added.
