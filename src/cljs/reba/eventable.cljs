@@ -5,18 +5,18 @@
 
 (defn add-listener! [object node event-type event-fn]
   "
-  Add an event listener to a particular materialized view.
+  Add an event listener to a particular DOM node.
 
-  Given a mutatable object, a particular materialized view of that object,
-  a target DOM node, event and reaction, bind an event listener to the DOM,
-  will apply that function to both the object and event, returning a new
-  value which is swapped into the original object.
+  Given a mutatable object, a target DOM node, event and reaction, bind
+  an event listener to the DOM, will apply that function to both the
+  object and event, returning a new value which is swapped into the
+  original object.
   "
 
   ;; Bind event listener to the element in the DOM.
   (.addEventListener
     (.getElementById js/document node) event-type
     (partial (fn [object event]
-               (.preventDefault x)
+               (.preventDefault event)
                (swap! object (fn [] (apply event-fn [object event])))) object)
     "false"))
