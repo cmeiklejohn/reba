@@ -32,5 +32,6 @@
   (.addEventListener
     (.getElementById js/document node) event-type
     (partial (fn [object event]
+               (.preventDefault x)
                (swap! object (fn [] (apply event-fn [object event])))) object)
     "false"))
