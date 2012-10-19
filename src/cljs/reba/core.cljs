@@ -7,7 +7,14 @@
   "Initialize the web application."
 
   ;; Define list of items.
-  (def list-of-items (atom ["Chris" "Simon" "Joan"]))
+  (def list-of-items (atom [{ :name "Fix program" :completed false }
+                            { :name "Write new program" :completed false }
+                            { :name "Do laundry" :completed true }]))
+
+  ;; Define completed predicate.
+  (defn completed? [item]
+    "Return whether an item is completed yet."
+    (true? (:completed item)))
 
   ;; Add materializer to generate the list.
   (materializable/add-materializer! list-of-items :list-view "items"
@@ -15,12 +22,12 @@
                                       (hiccups/html (for [x items] [:li x]))))
 
   ;; Add materializer to generate the total indicator.
-  (materializable/add-materializer! list-of-items :num_total "num_total"
+  (materializable/add-materializer! list-of-items :num-total "num-total"
                                     (fn [items] (count items)))
 
   ;; Add materializer to generate the oustanding indicator.
-  (materializable/add-materializer! list-of-items :num_oustanding "num_outstanding"
-                                    (fn [items] (count items)))
+  (materializable/add-materializer! list-of-items :num-oustanding "num-outstanding"
+                                    (fn [items] (count (filter completed? items))))
 
   ;; Bind events to a particular view.
   (materializable/add-listener! list-of-items :list-view, "items" "click"
