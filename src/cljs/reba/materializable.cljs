@@ -8,8 +8,8 @@
   "
   Watcher function for materializer.
 
-  When an object is changed, this function is triggered to re-render the content
-  into the DOM.
+  When an object is changed, this function is triggered to re-render the
+  content into the DOM.
   "
 
   ;; Generate materialized content.
