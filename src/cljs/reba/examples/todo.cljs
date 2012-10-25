@@ -60,5 +60,4 @@
 
   ;; Bind event listener for the form for when items are removed.
   (eventable/add-listener! list-of-items "outstanding" "click" (fn [items event]
-    (.log js/console event)
     (deref items))))
