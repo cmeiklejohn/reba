@@ -13,14 +13,14 @@
   "
 
   ;; Generate materialized content.
-  (def materialized (apply (materializer-name (meta y)) [b]))
+  (let [materialized (apply (materializer-name (meta y)) [b])]
 
-  ;; Update DOM.
-  (set! (.-innerHTML (dom/getElement node)) materialized)
+    ;; Update DOM.
+    (set! (.-innerHTML (dom/getElement node)) materialized)
 
-  ;; Saves the rendered content to the metadata.
-  (alter-meta! y (fn [m]
-    (merge m {(keyword (str "rendered-" materializer-name)) materialized}))))
+    ;; Saves the rendered content to the metadata.
+    (alter-meta! y (fn [m]
+      (merge m {(keyword (str "rendered-" materializer-name)) materialized})))))
 
 (defn add-materializer! [object materializer-name node materializer-fn]
   "
