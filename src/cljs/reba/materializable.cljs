@@ -1,7 +1,8 @@
 (ns
   ^{:author "Christopher Meiklejohn"
     :doc "Materialized view implementation."}
-  reba.materializable)
+  reba.materializable
+  (:require [goog.dom :as dom]))
 
 (defn materializer-watch! [node materializer-name x y a b]
   "
@@ -15,7 +16,7 @@
   (def materialized (apply (materializer-name (meta y)) [b]))
 
   ;; Update DOM.
-  (set! (.-innerHTML (.getElementById js/document node)) materialized)
+  (set! (.-innerHTML (dom/getElement node)) materialized)
 
   ;; Saves the rendered content to the metadata.
   (alter-meta! y (fn [m]

@@ -1,7 +1,9 @@
 (ns
   ^{:author "Christopher Meiklejohn"
     :doc "Event listening library."}
-  reba.eventable)
+  reba.eventable
+  (:require [goog.events :as events]
+            [goog.dom :as dom]))
 
 (defn add-listener! [object node event-type event-fn]
   "
@@ -14,8 +16,7 @@
   "
 
   ;; Bind event listener to the element in the DOM.
-  (.addEventListener
-    (.getElementById js/document node) event-type
+  (events/listen (dom/getElement node) event-type
     (partial (fn [object event]
                (.preventDefault event)
                (swap! object (fn [] (apply event-fn [object event])))) object)

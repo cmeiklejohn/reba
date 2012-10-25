@@ -56,4 +56,9 @@
   (eventable/add-listener! list-of-items "add-todo" "click" (fn [items event]
     (def new-todo-name (.-value (.getElementById js/document "new-todo-name")))
     (set! (.-value (.getElementById js/document "new-todo-name")) "")
-    (conj (deref items) (create-item new-todo-name false)))))
+    (conj (deref items) (create-item new-todo-name false))))
+
+  ;; Bind event listener for the form for when items are removed.
+  (eventable/add-listener! list-of-items "outstanding" "click" (fn [items event]
+    (.log js/console event)
+    (deref items))))
