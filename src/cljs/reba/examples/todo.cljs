@@ -10,17 +10,17 @@
 ;; Define completed predicate.
 (defn completed? [item]
   "Return whether an item is completed yet."
-  (true? (:completed item)))
+  (true? (:completed (deref item))))
 
 ;; Define oustanding predicate.
 (defn outstanding? [item]
   "Return whether an item is outstanding."
-  (false? (:completed item)))
+  (false? (:completed (deref item))))
 
 ;; Define item builder.
 (defn create-item [name completed]
   "Given a name and completed status, return a task."
-  {:name name :completed completed})
+  (atom {:name name :completed completed}))
 
 (defn main []
   "Initialize the to-do application."
@@ -34,15 +34,15 @@
   (materializable/add-materializer! list-of-items :completed-list-view "completed"
                                     (fn [items]
                                       (hiccups/html
-                                        (for [{:keys [name]}
-                                          (filter completed? items)] [:li name]))))
+                                        (for [item (filter completed? items)]
+                                          [:li (:name (deref item))]))))
 
   ;; Add materializer to generate the outstanding list.
   (materializable/add-materializer! list-of-items :outstanding-list-view "outstanding"
                                     (fn [items]
                                       (hiccups/html
-                                        (for [{:keys [name]}
-                                          (filter outstanding? items)] [:li name]))))
+                                        (for [item (filter outstanding? items)]
+                                          [:li (:name (deref item))]))))
 
   ;; Add materializer to generate the total indicator.
   (materializable/add-materializer! list-of-items :num-total "num-total"
@@ -54,10 +54,6 @@
 
   ;; Bind event listener for the form for when items are added.
   (eventable/add-listener! list-of-items "add-todo" "click" (fn [items event]
-    (def new-todo-name (.-value (.getElementById js/document "new-todo-name")))
-    (set! (.-value (.getElementById js/document "new-todo-name")) "")
-    (conj (deref items) (create-item new-todo-name false))))
-
-  ;; Bind event listener for the form for when items are removed.
-  (eventable/add-listener! list-of-items "outstanding" "click" (fn [items event]
-    (deref items))))
+    (let [new-todo-name (.-value (.getElementById js/document "new-todo-name"))]
+      (set! (.-value (.getElementById js/document "new-todo-name")) "")
+      (conj (deref items) (create-item new-todo-name false))))))
