@@ -4,7 +4,8 @@
   reba.examples.todo
   (:require [hiccups.runtime :as hiccusrt]
             [reba.materializable :as materializable]
-            [reba.eventable :as eventable])
+            [reba.eventable :as eventable]
+            [goog.dom :as dom])
   (:require-macros [hiccups.core :as hiccups]))
 
 ;; Define completed predicate.
@@ -16,6 +17,20 @@
 (defn outstanding? [item]
   "Return whether an item is outstanding."
   (false? (:completed (deref item))))
+
+;; Define list generator.
+(defn generate-list [filter-fn items]
+  "Return the HTML to generate a list."
+    (hiccups/html
+      (for [item (filter filter-fn items)]
+        [:li (:name (deref item))])))
+
+;; Define add event handler.
+(defn add-event-handler [items event]
+  (let [element-id "new-todo-name"
+        new-todo-name (.-value (dom/getElement element-id))]
+    (set! (.-value (dom/getElement element-id)) "")
+    (conj (deref items) (create-item new-todo-name false))))
 
 ;; Define item builder.
 (defn create-item [name completed]
@@ -32,17 +47,11 @@
 
   ;; Add materializer to generate the completed list.
   (materializable/add-materializer! list-of-items :completed-list-view "completed"
-                                    (fn [items]
-                                      (hiccups/html
-                                        (for [item (filter completed? items)]
-                                          [:li (:name (deref item))]))))
+                                    (partial generate-list completed?))
 
   ;; Add materializer to generate the outstanding list.
   (materializable/add-materializer! list-of-items :outstanding-list-view "outstanding"
-                                    (fn [items]
-                                      (hiccups/html
-                                        (for [item (filter outstanding? items)]
-                                          [:li (:name (deref item))]))))
+                                    (partial generate-list outstanding?))
 
   ;; Add materializer to generate the total indicator.
   (materializable/add-materializer! list-of-items :num-total "num-total"
@@ -53,7 +62,4 @@
                                     (fn [items] (count (filter completed? items))))
 
   ;; Bind event listener for the form for when items are added.
-  (eventable/add-listener! list-of-items "add-todo" "click" (fn [items event]
-    (let [new-todo-name (.-value (.getElementById js/document "new-todo-name"))]
-      (set! (.-value (.getElementById js/document "new-todo-name")) "")
-      (conj (deref items) (create-item new-todo-name false))))))
+  (eventable/add-listener! list-of-items "add-todo" "click" add-event-handler))
