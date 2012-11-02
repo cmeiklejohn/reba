@@ -23,10 +23,12 @@
   "Return the HTML to generate a list."
     (hiccups/html
       (for [item (filter filter-fn items)]
-        [:li (:name (deref item))])))
+        (let [i (deref item)]
+          [:li (:name i)]))))
 
 ;; Define add event handler.
 (defn add-event-handler [items event]
+  "Event handler for click events on the form."
   (let [element-id "new-todo-name"
         new-todo-name (.-value (dom/getElement element-id))]
     (set! (.-value (dom/getElement element-id)) "")
