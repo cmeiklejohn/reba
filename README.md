@@ -4,6 +4,9 @@ Prototype of a binding library authored in ClojureScript.  Reba is just an exper
 
 ## Usage
 
+Currently, the reba consists of two main protocols: ```materializable```
+and ```eventable```.
+
 ## Materializers
 
 Materializers provide a way to bind a Clojure atom to a particular location in the DOM and keep the DOM updated with changes to the object as they occur.
@@ -11,9 +14,9 @@ Materializers provide a way to bind a Clojure atom to a particular location in t
 The following code will bind a materializer named ```completed-list-view``` to the Clojure atom ```list-of-items```, and render the output of the some-html-generating-fn (when applied to the current value of the atom) into the element in the DOM identified by ```completed```.
 
 ```clojure
-(materializable/add-materializer! 
-	list-of-items 
-	:completed-list-view 
+(materializable/add!
+	list-of-items
+	:completed-list-view
 	"completed"
   some-html-generating-fn)
 ```
@@ -25,10 +28,10 @@ Eventables provide a way to bind event listeners to particular locations in the 
 In the following example, a listener is bound to the element in the DOM identified by ```add-todo`` for the ```click``` event.  When this event is received, the ```add-event-handler``` function will be applied to the ```list-of-items``` atom with the actual event, and its return value will be used to replace the current contents of ```list-of-items```.  Combined with Materializers, this can be used to propagate the changes directly back into the DOM.
 
 ```clojure
-(eventable/add-listener! 
-	list-of-items 
-	"add-todo" 
-	"click" 
+(eventable/add!
+	list-of-items
+	"add-todo"
+	"click"
 	add-event-handler))
 ```
 
