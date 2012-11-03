@@ -39,6 +39,15 @@ In the following example, a listener is bound to the element in the DOM identifi
 
 See the ```src/examples``` directory for examples of more full-featured web applications.
 
+## TODO
+
+Here's the list of TODO items:
+
+* Extract add-watch, alter-meta out of ```Materializable``` into an
+  ```Observable``` namespace.
+* Build out a ```Computable``` namespace for having objects lazily
+  computed from other objects.
+
 ## License
 
 Copyright (C) 2012 Christopher Meiklejohn.
