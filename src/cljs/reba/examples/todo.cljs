@@ -64,4 +64,4 @@
                                     (fn [items] (count (filter completed? items))))
 
   ;; Bind event listener for the form for when items are added.
-  (eventable/add-listener! list-of-items "add-todo" "click" add-event-handler))
+  (eventable/add! list-of-items "add-todo" "click" add-event-handler))
