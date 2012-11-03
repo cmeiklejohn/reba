@@ -43,8 +43,6 @@ See the ```src/examples``` directory for examples of more full-featured web appl
 
 Here's the list of TODO items:
 
-* Extract add-watch, alter-meta out of ```Materializable``` into an
-  ```Observable``` namespace.
 * Build out a ```Computable``` namespace for having objects lazily
   computed from other objects.
 

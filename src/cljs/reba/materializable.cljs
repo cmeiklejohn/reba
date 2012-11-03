@@ -2,7 +2,8 @@
   ^{:author "Christopher Meiklejohn"
     :doc "Materialized view implementation."}
   reba.materializable
-  (:require [goog.dom :as dom]))
+  (:require [goog.dom :as dom]
+            [reba.observable :as observable]))
 
 (defprotocol Materializable
   "Materializable protocol, which handles materializing views and
@@ -31,9 +32,8 @@
     ;; Add meta-data.
     (alter-meta! object (fn [m] (merge m {materializer-name materializer-fn})))
 
-    ;; Setup watcher.
-    (add-watch object materializer-name
-               (partial watch! node materializer-name))
+    ;; Setup observable.
+    (observable/add! object materializer-name (partial watch! node materializer-name))
 
     ;; Trigger materialization.
     (swap! object (fn [] @object))))
