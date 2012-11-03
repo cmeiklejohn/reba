@@ -4,13 +4,19 @@
   reba.materializable
   (:require [goog.dom :as dom]))
 
-(defn materializer-watch! [node materializer-name x y a b]
-  "
-  Watcher function for materializer.
+(defprotocol Materializable
+  "Materializable protocol, which handles materializing views and
+  drawing them into the DOM."
+  (add! [object materializer-name node materializer-fn]
+        "Setup a materializer and trigger immediately. Given an object,
+        materializer name, DOM node and function, bind a watcher which
+        will, when the object is changed, generate a materialized
+        view."))
 
-  When an object is changed, this function is triggered to re-render the
-  content into the DOM.
-  "
+(defn- watch! [node materializer-name x y a b]
+  "Watcher function for materializer. When an object is changed,
+  this function is triggered to re-render the content into the
+  DOM."
 
   ;; Generate materialized content.
   (let [materialized (apply (materializer-name (meta y)) [b])]
@@ -18,20 +24,16 @@
     ;; Update DOM.
     (set! (.-innerHTML (dom/getElement node)) materialized)))
 
-(defn add-materializer! [object materializer-name node materializer-fn]
-  "
-  Setup a materializer and trigger immediately.
+(extend-type Atom
+  Materializable
+  (add! [object materializer-name node materializer-fn]
 
-  Given an object, materializer name, DOM node and function, bind a watcher
-  which will, when the object is changed, generate a materialized view.
-  "
+    ;; Add meta-data.
+    (alter-meta! object (fn [m] (merge m {materializer-name materializer-fn})))
 
-  ;; Add meta-data.
-  (alter-meta! object (fn [m] (merge m {materializer-name materializer-fn})))
+    ;; Setup watcher.
+    (add-watch object materializer-name
+               (partial watch! node materializer-name))
 
-  ;; Setup watcher.
-  (add-watch object materializer-name
-             (partial materializer-watch! node materializer-name))
-
-  ;; Trigger materialization.
-  (swap! object (fn [] @object)))
+    ;; Trigger materialization.
+    (swap! object (fn [] @object))))

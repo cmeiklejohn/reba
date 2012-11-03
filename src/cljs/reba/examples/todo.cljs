@@ -48,19 +48,19 @@
                             (create-item "Do laundry" true)]))
 
   ;; Add materializer to generate the completed list.
-  (materializable/add-materializer! list-of-items :completed-list-view "completed"
+  (materializable/add! list-of-items :completed-list-view "completed"
                                     (partial generate-list completed?))
 
   ;; Add materializer to generate the outstanding list.
-  (materializable/add-materializer! list-of-items :outstanding-list-view "outstanding"
+  (materializable/add! list-of-items :outstanding-list-view "outstanding"
                                     (partial generate-list outstanding?))
 
   ;; Add materializer to generate the total indicator.
-  (materializable/add-materializer! list-of-items :num-total "num-total"
+  (materializable/add! list-of-items :num-total "num-total"
                                     (fn [items] (count items)))
 
   ;; Add materializer to generate the oustanding indicator.
-  (materializable/add-materializer! list-of-items :num-oustanding "num-outstanding"
+  (materializable/add! list-of-items :num-oustanding "num-outstanding"
                                     (fn [items] (count (filter completed? items))))
 
   ;; Bind event listener for the form for when items are added.
