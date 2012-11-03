@@ -4,8 +4,11 @@ Prototype of a binding library authored in ClojureScript.  Reba is just an exper
 
 ## Usage
 
-Currently, the reba consists of two main protocols: ```materializable```
-and ```eventable```.
+Currently, the reba consists of three main protocols: ```materializable```, ```observable``` and ```eventable```.
+
+## Observables
+
+Observables are a lightweight wraper around watchers in Clojure, but provides the basic building blocks for building ```materializable``` and ```eventable```.
 
 ## Materializers
 
@@ -25,7 +28,7 @@ The following code will bind a materializer named ```completed-list-view``` to t
 
 Eventables provide a way to bind event listeners to particular locations in the DOM, and tie them to a particular Clojure atom for mutating state.  Combined with Materializers, Eventables provide the ability to have an event triggered from the DOM, update a Clojure atom, and propagate the result of the action directly back into the DOM.
 
-In the following example, a listener is bound to the element in the DOM identified by ```add-todo`` for the ```click``` event.  When this event is received, the ```add-event-handler``` function will be applied to the ```list-of-items``` atom with the actual event, and its return value will be used to replace the current contents of ```list-of-items```.  Combined with Materializers, this can be used to propagate the changes directly back into the DOM.
+In the following example, a listener is bound to the element in the DOM identified by ```add-todo``` for the ```click``` event.  When this event is received, the ```add-event-handler``` function will be applied to the ```list-of-items``` atom with the actual event, and its return value will be used to replace the current contents of ```list-of-items```.  Combined with Materializers, this can be used to propagate the changes directly back into the DOM.
 
 ```clojure
 (eventable/add!
