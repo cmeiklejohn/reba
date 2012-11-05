@@ -1,6 +1,6 @@
 (ns
   ^{:author "Christopher Meiklejohn"
-    :doc "Materialized view implementation."}
+    :doc "Materializable implementation."}
   reba.materializable
   (:require [goog.dom :as dom]
             [reba.observable :as observable]))
@@ -14,26 +14,16 @@
         will, when the object is changed, generate a materialized
         view."))
 
-(defn- watch! [node materializer-name x y a b]
+(defn- watch! [node materializer-name materializer-fn x y a b]
   "Watcher function for materializer. When an object is changed,
   this function is triggered to re-render the content into the
   DOM."
-
-  ;; Generate materialized content.
-  (let [materialized (apply (materializer-name (meta y)) [b])]
-
-    ;; Update DOM.
+  (let [materialized (apply materializer-fn [b])]
     (set! (.-innerHTML (dom/getElement node)) materialized)))
 
 (extend-type Atom
   Materializable
   (add! [object materializer-name node materializer-fn]
-
-    ;; Add meta-data.
-    (alter-meta! object (fn [m] (merge m {materializer-name materializer-fn})))
-
-    ;; Setup observable.
-    (observable/add! object materializer-name (partial watch! node materializer-name))
-
-    ;; Trigger materialization.
-    (swap! object (fn [] @object))))
+    (observable/add! object materializer-name
+                     (partial watch! node materializer-name materializer-fn))
+    (swap! object (fn [] (deref object)))))
