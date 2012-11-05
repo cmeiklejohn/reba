@@ -14,16 +14,15 @@
         will, when the object is changed, generate a materialized
         view."))
 
-(defn- watch! [node materializer-name materializer-fn x y a b]
+(defn- watch! [node materializer-fn value]
   "Watcher function for materializer. When an object is changed,
   this function is triggered to re-render the content into the
   DOM."
-  (let [materialized (apply materializer-fn [b])]
-    (set! (.-innerHTML (dom/getElement node)) materialized)))
+  (set! (.-innerHTML (dom/getElement node)) (apply materializer-fn [value])))
 
 (extend-type Atom
   Materializable
   (add! [object materializer-name node materializer-fn]
     (observable/add! object materializer-name
-                     (partial watch! node materializer-name materializer-fn))
+                     (partial watch! node materializer-fn))
     (swap! object (fn [] (deref object)))))
