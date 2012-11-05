@@ -4,11 +4,27 @@ Prototype of a binding library authored in ClojureScript.  Reba is just an exper
 
 ## Usage
 
-Currently, the reba consists of three main protocols: ```materializable```, ```observable``` and ```eventable```.
+Currently, the reba consists of the following protocols:
+
+* materializable
+* computable
+* eventable
+* observable
 
 ## Observables
 
-Observables are a lightweight wraper around watchers in Clojure, but provides the basic building blocks for building ```materializable``` and ```eventable```.
+Observables are a lightweight wraper around watchers in Clojure, but provides the basic building blocks for building the others.
+
+## Computables
+
+Computables provide the ability to bind objects together using a derivation function which defines how to derive the object from the other.
+
+The following example defines a new list, which is derived by taking an existing list, and filtering the values.
+
+```clojure
+(computable/add! list-of-items list-of-oustanding-items "oustanding-list"
+                 (fn [items] (filter outstanding? items)))
+```
 
 ## Materializers
 
@@ -17,11 +33,8 @@ Materializers provide a way to bind a Clojure atom to a particular location in t
 The following code will bind a materializer named ```completed-list-view``` to the Clojure atom ```list-of-items```, and render the output of the some-html-generating-fn (when applied to the current value of the atom) into the element in the DOM identified by ```completed```.
 
 ```clojure
-(materializable/add!
-	list-of-items
-	:completed-list-view
-	"completed"
-  some-html-generating-fn)
+(materializable/add! list-of-items :completed-list-view "completed"
+                     some-html-generating-fn)
 ```
 
 ## Eventables
@@ -31,23 +44,12 @@ Eventables provide a way to bind event listeners to particular locations in the 
 In the following example, a listener is bound to the element in the DOM identified by ```add-todo``` for the ```click``` event.  When this event is received, the ```add-event-handler``` function will be applied to the ```list-of-items``` atom with the actual event, and its return value will be used to replace the current contents of ```list-of-items```.  Combined with Materializers, this can be used to propagate the changes directly back into the DOM.
 
 ```clojure
-(eventable/add!
-	list-of-items
-	"add-todo"
-	"click"
-	add-event-handler))
+(eventable/add! list-of-items "add-todo" "click" add-event-handler)
 ```
 
 ## Examples
 
 See the ```src/examples``` directory for examples of more full-featured web applications.
-
-## TODO
-
-Here's the list of TODO items:
-
-* Build out a ```Computable``` namespace for having objects lazily
-  computed from other objects.
 
 ## License
 
