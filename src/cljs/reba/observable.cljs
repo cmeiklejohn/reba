@@ -1,18 +1,20 @@
 (ns
   ^{:author "Christopher Meiklejohn"
-    :doc "Observables implementation."}
+    :doc "Observable implementation."}
   reba.observable
   (:require [goog.dom :as dom]))
 
 (defprotocol Observable
-  "Observable protocol, which handles triggering functions when objects
-  change."
+  "Observable protocol, which handles triggering functions when
+  references change."
   (add! [object observer-name observer-fn]
-        "Bind a watcher to fire when the object changes."))
+        "Add a named observer function to a reference."
+  (remove! [object observer-name]
+        "Remove a named observer function from a reference."))
 
 (extend-type Atom
   Observable
   (add! [object observer-name observer-fn]
-
-    ;; Setup watcher.
-    (add-watch object observer-name observer-fn)))
+    (add-watch object observer-name observer-fn))
+  (remove! [object observer-name]
+    (remove-watch object observer-name)))
