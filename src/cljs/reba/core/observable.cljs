@@ -1,7 +1,7 @@
 (ns
   ^{:author "Christopher Meiklejohn"
     :doc "Observable implementation."}
-  reba.observable
+  reba.core.observable
   (:require [goog.dom :as dom]))
 
 (defprotocol Observable

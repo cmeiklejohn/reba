@@ -1,9 +1,9 @@
 (ns
   ^{:author "Christopher Meiklejohn"
     :doc "Computable implementation."}
-  reba.computable
+  reba.core.computable
   (:require [goog.dom :as dom]
-            [reba.observable :as observable]))
+            [reba.core.observable :as observable]))
 
 (defprotocol Computable
   "Computable protocol, which provides a mechanism to bind objects so

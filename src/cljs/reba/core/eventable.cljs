@@ -1,7 +1,7 @@
 (ns
   ^{:author "Christopher Meiklejohn"
     :doc "Eventable implementation."}
-  reba.eventable
+  reba.core.eventable
   (:require [goog.events :as events]
             [goog.dom :as dom]))
 

@@ -9,6 +9,6 @@
     :builds [{
       :source-path "src/cljs"
       :compiler {
-        :output-to "resources/public/application.js"
+        :output-to "resources/public/examples.js"
         :optimizations :whitespace
         :pretty-print true}}]})

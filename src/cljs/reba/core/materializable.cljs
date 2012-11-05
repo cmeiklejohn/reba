@@ -1,9 +1,9 @@
 (ns
   ^{:author "Christopher Meiklejohn"
     :doc "Materializable implementation."}
-  reba.materializable
+  reba.core.materializable
   (:require [goog.dom :as dom]
-            [reba.observable :as observable]))
+            [reba.core.observable :as observable]))
 
 (defprotocol Materializable
   "Materializable protocol, which handles materializing views and

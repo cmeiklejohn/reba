@@ -3,9 +3,9 @@
     :doc "To-Do List Example"}
   reba.examples.todo
   (:require [hiccups.runtime :as hiccusrt]
-            [reba.materializable :as materializable]
-            [reba.eventable :as eventable]
-            [reba.computable :as computable]
+            [reba.core.materializable :as materializable]
+            [reba.core.eventable :as eventable]
+            [reba.core.computable :as computable]
             [goog.dom :as dom])
   (:require-macros [hiccups.core :as hiccups]))
 
