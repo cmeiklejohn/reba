@@ -1,6 +1,6 @@
 (ns
   ^{:author "Christopher Meiklejohn"
-    :doc "Event listening library."}
+    :doc "Eventable implementation."}
   reba.eventable
   (:require [goog.events :as events]
             [goog.dom :as dom]))
@@ -18,8 +18,6 @@
 (extend-type Atom
   Eventable
   (add! [object node event-type event-fn]
-
-    ;; Bind event listener to the element in the DOM.
     (events/listen (dom/getElement node) event-type
       (partial (fn [object event]
                  (.preventDefault event)
