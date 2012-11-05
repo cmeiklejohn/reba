@@ -1,6 +1,6 @@
 (ns
   ^{:author "Christopher Meiklejohn"
-    :doc "Computable properties implementation"}
+    :doc "Computable implementation."}
   reba.computable
   (:require [goog.dom :as dom]
             [reba.observable :as observable]))
@@ -14,7 +14,6 @@
 
 (extend-type Atom
   Computable
-  (bind! [source destination]
-    ;; TODO: Bind a watcher on destination for a deref and a derivation
-    ;; function, which will deref the source and propogate changes down.
-))
+  (bind! [source destination derivation-name derivation-fn]
+    (observable/add! source derivation-name
+                     (fn [] (swap! destination derivation-fn)))))
