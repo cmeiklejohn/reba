@@ -1,1 +1,3 @@
-(ns reba.core)
+(ns
+  ^{:author "Christopher Meiklejohn"}
+  reba.core)
