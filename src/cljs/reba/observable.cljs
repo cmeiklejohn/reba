@@ -8,7 +8,7 @@
   "Observable protocol, which handles triggering functions when
   references change."
   (add! [object observer-name observer-fn]
-        "Add a named observer function to a reference."
+        "Add a named observer function to a reference.")
   (remove! [object observer-name]
         "Remove a named observer function from a reference."))
 
